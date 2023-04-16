@@ -4,13 +4,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Navigate } from "../../App";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export function HomeCard1(props) {
   return (
-    <TouchableOpacity style={style.homeCard1} activeOpacity={0.9}>
+    <TouchableOpacity style={style.homeCard1} activeOpacity={0.9} onPress={() =>{
+      Navigate("Recipe");
+    }}>
       <View></View>
     </TouchableOpacity>
   );
@@ -18,7 +21,9 @@ export function HomeCard1(props) {
 
 export function HomeCard2(props) {
   return (
-    <TouchableOpacity style={style.homeCard2} activeOpacity={0.9}>
+    <TouchableOpacity style={style.homeCard2} activeOpacity={0.9} onPress={() =>{
+      Navigate("Recipe");
+    }}>
       <View></View>
     </TouchableOpacity>
   );
@@ -26,7 +31,9 @@ export function HomeCard2(props) {
 
 export function NormalCard(props){
     return (
-        <TouchableOpacity style={style.homeCard3} activeOpacity={0.9}>
+        <TouchableOpacity style={style.homeCard3} activeOpacity={0.9} onPress={() =>{
+          Navigate("Recipe");
+        }}>
           <View></View>
         </TouchableOpacity>
       );
@@ -34,7 +41,9 @@ export function NormalCard(props){
 
 export function RandomCard(props){
     return (
-        <TouchableOpacity style={style.randomCard} activeOpacity={0.9}>
+        <TouchableOpacity style={style.randomCard} activeOpacity={0.9} onPress={() =>{
+          Navigate("Recipe");
+        }}>
           <View></View>
         </TouchableOpacity>
       );

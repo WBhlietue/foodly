@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
 const headColor = "#aaffaa";
-const headSize = 50;
+export const headSize = 50;
 
 export function Header(props) {
   return (

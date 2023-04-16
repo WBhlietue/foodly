@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Navigate, stack } from "../../App";
 import { Header } from "./Header";
 
 const headColor = "#aaffaa";
@@ -12,7 +13,7 @@ export function HeaderBack(props) {
     <View style={style.main}>
       <Header page={-1} name={props.name} />
       <TouchableOpacity activeOpacity={0.8} style={style.btn} onPress={() => {
-        props.navigation.navigate("Main");
+        Navigate(props.back);
       }}>
         <Image style={{height:30, width:30}} source={require("../../assets/images/go-back-arrow.png")}></Image>
       </TouchableOpacity>

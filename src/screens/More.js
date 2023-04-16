@@ -30,7 +30,7 @@ export function More(props) {
   const renderItem = ({ item }) => <NormalCard item={item}></NormalCard>;
   return (
     <View style={style.main}>
-      <HeaderBack name={props.route.params["type"]} navigation={props.navigation}></HeaderBack>
+      <HeaderBack name={props.route.params["type"]} navigation={props.navigation} back="Main"></HeaderBack>
       <FlatList
         data={data}
         renderItem={renderItem}

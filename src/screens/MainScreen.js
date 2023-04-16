@@ -17,15 +17,15 @@ export function MainScreen(props) {
     page.push(
       <View style={{ height: "100%", width: "100%", zIndex: 0 }}>
         {props.page == 0 ? (
-          <Random navigation={props.navigation} />
+          <Random  />
         ) : props.page == 1 ? (
-          <Category navigation={props.navigation} />
+          <Category  />
         ) : props.page == 2 ? (
-          <Home navigation={props.navigation} />
+          <Home  />
         ) : props.page == 3 ? (
-          <Favorite navigation={props.navigation} />
+          <Favorite  />
         ) : props.page == 4 ? (
-          <User navigation={props.navigation} />
+          <User  />
         ) : (
           <View />
         )}
@@ -44,15 +44,15 @@ export function MainScreen(props) {
     page.push(
       <View style={{ height: "100%", width: "100%", zIndex: 0 }}>
         {current == 0 ? (
-          <Random navigation={props.navigation} />
+          <Random  />
         ) : current == 1 ? (
-          <Category navigation={props.navigation} />
+          <Category  />
         ) : current == 2 ? (
-          <Home navigation={props.navigation} />
+          <Home  />
         ) : current == 3 ? (
-          <Favorite navigation={props.navigation} />
+          <Favorite  />
         ) : current == 4 ? (
-          <User navigation={props.navigation} />
+          <User  />
         ) : (
           <View />
         )}
@@ -72,15 +72,15 @@ export function MainScreen(props) {
         ]}
       >
         {props.page == 0 ? (
-          <Random navigation={props.navigation} />
+          <Random  />
         ) : props.page == 1 ? (
-          <Category navigation={props.navigation} />
+          <Category  />
         ) : props.page == 2 ? (
-          <Home navigation={props.navigation} />
+          <Home  />
         ) : props.page == 3 ? (
-          <Favorite navigation={props.navigation} />
+          <Favorite  />
         ) : props.page == 4 ? (
-          <User navigation={props.navigation} />
+          <User  />
         ) : (
           <View />
         )}

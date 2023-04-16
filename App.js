@@ -6,15 +6,23 @@ import { Header } from "./src/components/Header";
 import { Navigator } from "./src/components/Nagivator";
 import { MainScreen } from "./src/screens/MainScreen";
 import { More } from "./src/screens/More";
+import { Recipe } from "./src/screens/Recipe";
 
 const stack = createNativeStackNavigator();
 
+var nav = null;
+
+export function Navigate(name, option={}){
+  nav.navigate(name, option);
+}
+
 function Main({navigation}){
+  nav = navigation
   const [selected, setSelected] = useState(2);
   return (
     <View style={styles.container}>
       <Header page={selected} />
-      <MainScreen page={selected} navigation={navigation} />
+      <MainScreen page={selected}  />
       <Navigator select={[selected, setSelected]} />
     </View>
   );
@@ -26,6 +34,7 @@ export default function App() {
       <stack.Navigator screenOptions={{headerShown:false}}>
         <stack.Screen name="Main" component={Main}/>
         <stack.Screen name="More" component={More}/>
+        <stack.Screen name="Recipe" component={Recipe}/>
       </stack.Navigator>
     </NavigationContainer>
   )

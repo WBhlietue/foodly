@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
+import { Navigate } from "../../App";
 import { HomeCard2, RandomCard } from "../components/Cards";
 
 const width = Dimensions.get("window").width;
@@ -25,7 +26,8 @@ export function RandonPanel() {
   var get = false;
   aniScale.addListener((value) => {
     if(value.value == 1.8 && !get){
-      alert("getRandom")
+      // alert("getRandom")
+      Navigate("Recipe")
       get = true
     }
   })
