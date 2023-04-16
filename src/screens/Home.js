@@ -11,18 +11,20 @@ function Bar(props) {
   return (
     <View style={{margin:10}}>
       <Text style={style.title}> {props.name}</Text>
-      <TouchableOpacity style={style.btn}>
+      <TouchableOpacity style={style.btn} onPress={() =>{ 
+        props.navigation.navigate("More", {type:props.name});
+      }}>
         <Text style={style.title}>{"->"}</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
-export function Home() {
+export function Home(props) {
   return (
     <View style={style.main}>
       <HomeCard1 />
-      <Bar name="Most Poplular" />
+      <Bar name="Most Poplular" navigation = {props.navigation}/>
       <View style={style.scroll}>
         <ScrollView horizontal>
           <HomeCard2 />
@@ -32,7 +34,7 @@ export function Home() {
           <HomeCard2 />
         </ScrollView>
       </View>
-      <Bar name="Most View" />
+      <Bar name="Most View" navigation = {props.navigation}/>
       <View style={style.scroll}>
         <ScrollView horizontal>
           <HomeCard2 />

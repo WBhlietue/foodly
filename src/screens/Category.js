@@ -4,15 +4,7 @@ import { HomeCard2 } from "../components/Cards";
 export function Category() {
   return (
     <View style={style.main}>
-      <ScrollView
-        horizontal
-        scrollEnabled
-        contentContainerStyle={{ minHeight: "100%" }}
-      >
-        <HomeCard2 />
-        <HomeCard2 />
-        <HomeCard2 />
-      </ScrollView>
+      <Text>Carousel is here</Text>
     </View>
   );
 }
