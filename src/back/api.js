@@ -1,3 +1,3 @@
-const app = {
-    // api key
-}
+export const firebaseConfig = {
+
+  };
