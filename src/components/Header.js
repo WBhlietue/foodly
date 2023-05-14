@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import { headerColor } from "../../Datas";
 
-const headColor = "#aaffaa";
 export const headSize = 50;
 
 export function Header(props) {
@@ -11,7 +11,7 @@ export function Header(props) {
         {props.page == 0
           ? "Random"
           : props.page == 1
-          ? "Category"
+          ? "Search"
           : props.page == 2
           ? "Home"
           : props.page == 3
@@ -20,14 +20,18 @@ export function Header(props) {
           ? "User"
           : props.name}
       </Text>
-      <StatusBar translucent={false} style="auto" backgroundColor={headColor} />
+      <StatusBar
+        translucent={false}
+        style="auto"
+        backgroundColor={headerColor}
+      />
     </View>
   );
 }
 
 const style = StyleSheet.create({
   main: {
-    backgroundColor: headColor,
+    backgroundColor: headerColor,
     width: "100%",
     position: "absolute",
     height: headSize,
@@ -36,7 +40,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-    zIndex:1
+    zIndex: 1,
   },
   text: {
     fontSize: 25,

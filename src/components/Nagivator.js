@@ -9,10 +9,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Circle, Path, Svg } from "react-native-svg";
+import { footerColor } from "../../Datas";
 
 const navBarInnerPadding = 15;
-const navColor = "#9999ff";
-const navSize = 50;
+export const navSize = 50;
 const backSize = 1.5;
 const pos = [-137, -67, 2, 71, 137];
 const width = Dimensions.get("window").width;
@@ -85,7 +86,7 @@ function NavButton(props) {
             props.num == 0
               ? require("../../assets/images/shuffle.png")
               : props.num == 1
-              ? require("../../assets/images/carousel.png")
+              ? require("../../assets/images/search.png")
               : props.num == 2
               ? require("../../assets/images/home.png")
               : props.num == 3
@@ -102,7 +103,7 @@ function NavButton(props) {
 
 export function Navigator(props) {
   const windowWidth = Dimensions.get("window").width;
-  
+
   const [backLeft, setBackLeft] = useState(pos[2]);
   const aniBackLeft = useRef(new Animated.Value(0)).current;
   useEffect(() => {
@@ -123,13 +124,24 @@ export function Navigator(props) {
     <View style={style.main}>
       <View style={style.newNavParent}>
         <Animated.View style={[style.newNavBack, { translateX: aniBackLeft }]}>
-          <Image
+          {/* <Image
             style={style.ultraNewNavImage}
-            source={require("../../assets/images/suuri.png")}
-          ></Image>
-          <View
-            style={style.ultraNewNavCircle}
-          ></View>
+            source={require("../../assets/images/suuri.svg")}
+          ></Image> */}
+          <Svg
+            width="800"
+            height="53"
+            viewBox="0 0 800 53"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={style.ultraNewNavImage}
+          >
+            <Path
+              d="M0 0H328.891C350.661 0 371.468 8.97559 386.407 24.811V24.811C400.836 40.1066 425.164 40.1066 439.593 24.811V24.811C454.532 8.97559 475.339 0 497.109 0H800V53H0V0Z"
+              fill={footerColor}
+            />
+          </Svg>
+          <View style={style.ultraNewNavCircle}></View>
           <View style={style.ultraNewNavLeft}></View>
           <View style={style.ultraNewNavRight}></View>
         </Animated.View>
@@ -203,10 +215,9 @@ const style = StyleSheet.create({
   },
 
   ultraNewNavImage: {
-    height: 50,
-    width: width,
     position: "absolute",
-    bottom: -25,
+    bottom: -30,
+    left: -233,
   },
   ultraNewNavCircle: {
     height: 50,
@@ -214,23 +225,7 @@ const style = StyleSheet.create({
     position: "absolute",
     bottom: -10,
     left: width / 2 - 25,
-    backgroundColor:navColor,
-    borderRadius:100,
-  },
-  ultraNewNavLeft: {
-    backgroundColor:navColor,
-    height:50,
-    position:"absolute",
-    width:width,
-    bottom:-25,
-    left:-width+10
-  },
-  ultraNewNavRight: {
-    backgroundColor:navColor,
-    height:50,
-    position:"absolute",
-    width:width,
-    bottom:-25,
-    left:width-10
+    backgroundColor: footerColor,
+    borderRadius: 100,
   },
 });

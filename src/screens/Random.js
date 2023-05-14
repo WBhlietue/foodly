@@ -8,14 +8,18 @@ import {
 } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
 import { Navigate } from "../../App";
+import { backgroundColor, randomBtnColor } from "../../Datas";
+import { GetNumberRandomFood, GetRandonFood } from "../back/Main";
 import { HomeCard2, RandomCard } from "../components/Cards";
 
 const width = Dimensions.get("window").width;
 
+var random1 = GetRandonFood();
+
 export function Random() {
   return (
     <View style={style.main}>
-      <RandomCard />
+      <RandomCard data={random1}/>
       <RandonPanel />
     </View>
   );
@@ -26,8 +30,7 @@ export function RandonPanel() {
   var get = false;
   aniScale.addListener((value) => {
     if(value.value == 1.8 && !get){
-      // alert("getRandom")
-      Navigate("Recipe")
+      Navigate("Recipe", GetRandonFood())
       get = true
     }
   })
@@ -61,7 +64,7 @@ export function RandonPanel() {
 
 const style = StyleSheet.create({
   main: {
-    backgroundColor: "#ffffff",
+    backgroundColor: backgroundColor,
     height: "100%",
     width: "100%",
   },
@@ -75,7 +78,7 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   opa: {
-    backgroundColor: "#ff0000",
+    backgroundColor: randomBtnColor,
     width: width * 2,
     height: width * 2,
     position: "absolute",

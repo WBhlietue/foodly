@@ -1,36 +1,38 @@
+import { useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
+import { GetPopular, GetView } from "../back/Main";
 import { NormalCard } from "../components/Cards";
 import { HeaderBack } from "../components/HeaderBack";
 
 export function More(props) {
-  console.log(props.route.params);
-  const data = [
-    { id: "0", title: "item 1" },
-    { id: "1", title: "item 1" },
-    { id: "2", title: "item 1" },
-    { id: "3", title: "item 1" },
-    { id: "4", title: "item 1" },
-    { id: "5", title: "item 1" },
-    { id: "6", title: "item 1" },
-    { id: "7", title: "item 1" },
-    { id: "8", title: "item 1" },
-    { id: "9", title: "item 1" },
-    { id: "10", title: "item 1" },
-    { id: "11", title: "item 1" },
-    { id: "12", title: "item 1" },
-    { id: "13", title: "item 1" },
-    { id: "14", title: "item 1" },
-    { id: "15", title: "item 1" },
-    { id: "16", title: "item 1" },
-    { id: "17", title: "item 1" },
-    { id: "18", title: "item 1" },
-    { id: "19", title: "item 1" },
-    { id: "x" },
-  ];
+  const [load, setLoad] = useState(0);
+  const [data1, setData] = useState([]);
+
+  if (load == 0) {
+    setLoad(1);
+    if (props.route.params.type == "Most Poplular") {
+      GetPopular(20).then((res) => {
+        setData(res);
+      });
+    } else {
+      GetView(20).then((res) => {
+        setData(res);
+      });
+    }
+  }
+  const data = [];
+  for (let i = 0; i < data1.length; i++) {
+    data.push({ id: i, data: data1[i] });
+  }
+
   const renderItem = ({ item }) => <NormalCard item={item}></NormalCard>;
   return (
     <View style={style.main}>
-      <HeaderBack name={props.route.params["type"]} navigation={props.navigation} back="Main"></HeaderBack>
+      <HeaderBack
+        name={props.route.params["type"]}
+        navigation={props.navigation}
+        back="Main"
+      ></HeaderBack>
       <FlatList
         data={data}
         renderItem={renderItem}

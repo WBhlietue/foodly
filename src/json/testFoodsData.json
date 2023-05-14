@@ -1,0 +1,61 @@
+[
+    {
+        "num":0,
+        "picUrl":"../../assets/images/foods/1.jpg",
+        "name":"first food",
+        "type":"food",
+        "kkal":"99",
+        "difficut":"easy",
+        "time":"30min",
+        "material":["potato", "pepper", "onion", "meat"],
+        "howTo" :["Step 1. Blabla", "Step 2. Blabla", "Step 3. Blabla", "Step 4. Blabla", "Step 5. Blabla", "Step 6. Blabla"],
+        "description":"nani nain"
+    },
+    {
+        "num":1,
+        "picUrl":"../../assets/images/foods/2.jpg",
+        "name":"second food",
+        "type":"food",
+        "kkal":"99",
+        "difficut":"easy",
+        "time":"30min",
+        "material":["tomato", "bread", "onion", "meat"],
+        "howTo" :["Step 1. Blabla", "Step 2. Blabla", "Step 3. Blabla", "Step 4. Blabla", "Step 5. Blabla", "Step 6. Blabla"],
+        "description":"nani nain"
+    },
+    {
+        "num":2,
+        "picUrl":"../../assets/images/foods/3.jpg",
+        "name":"third food",
+        "type":"food",
+        "kkal":"99",
+        "difficut":"easy",
+        "time":"30min",
+        "material":["potato", "salt", "flour"],
+        "howTo" :["Step 1. Blabla", "Step 2. Blabla", "Step 3. Blabla", "Step 4. Blabla", "Step 5. Blabla", "Step 6. Blabla"],
+        "description":"nani nain"
+    },
+    {
+        "num":3,
+        "picUrl":"../../assets/images/foods/4.jpg",
+        "name":"fifth food",
+        "type":"food",
+        "kkal":"99",
+        "difficut":"easy",
+        "time":"30min",
+        "material":["sugar", "pepper", "onion", "salt"],
+        "howTo" :["Step 1. Blabla", "Step 2. Blabla", "Step 3. Blabla", "Step 4. Blabla", "Step 5. Blabla", "Step 6. Blabla"],
+        "description":"nani nain"
+    },{
+        "num":4,
+        "picUrl":"../../assets/images/foods/5.jpg",
+        "name":"sixth food",
+        "type":"food",
+        "kkal":"99",
+        "difficut":"easy",
+        "time":"30min",
+        "material":["potato", "sugar", "onion", "meat"],
+        "howTo" :["Step 1. Blabla", "Step 2. Blabla", "Step 3. Blabla", "Step 4. Blabla", "Step 5. Blabla", "Step 6. Blabla"],
+        "description":"nani nain"
+    }
+]

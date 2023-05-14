@@ -6,13 +6,13 @@ export function Star(props) {
   return (
     <TouchableOpacity activeOpacity={0.7}
       onPress={() => {
-        setActive(!active)
+        setActive(1-active)
         props.onChange();
       }}
     >
       <Image
         style={{ width: props.size, height: props.size }}
-        source={active ? require("../../assets/images/starFull.png"):require( "../../assets/images/starOutline.png")}
+        source={active==1 ? require("../../assets/images/starFull.png"):require( "../../assets/images/starOutline.png")}
       />
     </TouchableOpacity>
   );

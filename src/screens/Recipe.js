@@ -10,6 +10,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import {
+  backgroundColor,
+  recipeDataBoxColor,
+  recipeDescriptionColor,
+  recipeHowToColor,
+} from "../../Datas";
+import { AddFavorite, GetIsFav } from "../back/Main";
 import { headSize } from "../components/Header";
 import { HeaderBack } from "../components/HeaderBack";
 import { lorem } from "../components/Lorem";
@@ -21,9 +28,8 @@ const height = Dimensions.get("window").height;
 function Data(props) {
   return (
     <View style={style.dataBox}>
-      <Text style={style.dataText}>
-        {props.type}: {props.value}
-      </Text>
+      <Text style={style.dataText}>{props.type}:</Text>
+      <Text style={style.dataText2}>{props.value}</Text>
     </View>
   );
 }
@@ -31,22 +37,7 @@ function Data(props) {
 function TopImage(props) {
   return (
     <View>
-      <View style={style.topImageImage}>
-        <TouchableOpacity
-          style={style.topImageComment}
-          onPress={() => {
-            props.Click();
-          }}
-        >
-          <Image
-            style={{ width: 30, height: 30 }}
-            source={require("../../assets/images/comment.png")}
-          ></Image>
-        </TouchableOpacity>
-        <View style={style.topImageStar}>
-          <Star size={30} onChange={() => {}} />
-        </View>
-      </View>
+      <Image source={props.source} style={style.topImageImage}></Image>
     </View>
   );
 }
@@ -67,10 +58,17 @@ function CommentBox(props) {
 }
 
 export function Recipe(props) {
+  const data = props.route.params;
   const duration = 300;
   const opacity = useRef(new Animated.Value(0)).current;
   const posY = useRef(new Animated.Value(height)).current;
   const [reviewFilter, setReviewFilter] = useState("none");
+  const [favorite, setFavorite] = useState(GetIsFav(data.num));
+  const materials = data[0].material.join(", ");
+  let howTo = "";
+  for (let i = 0; i < data[0].howto.length; i++) {
+    howTo += "      Step" + (i + 1) + ": " + (data[0].howto[i].trim()) + "\n";
+  }
   useEffect(() => {
     Animated.timing(posY, {
       toValue: height,
@@ -109,28 +107,57 @@ export function Recipe(props) {
   }
   return (
     <View>
-      <HeaderBack name="Recipe" navigation={props.navigation} back="Main" />
+      <HeaderBack
+        name={data[0].name}
+        navigation={props.navigation}
+        back="Main"
+      />
       <ScrollView horizontal={false} style={style.main}>
         <TopImage
+          source={data[1]}
           Click={() => {
             OnClick();
           }}
         />
-        <View style={style.dataParent}>
-          <View style={style.dataRow}>
-            <Data type="Type" value="Food" />
-            <Data type="Kkal" value="99" />
-          </View>
-          <View style={style.dataRow}>
-            <Data type="Difficult" value="Easy" />
-            <Data type="Time" value="30min" />
-          </View>
-          <View style={[style.dataRow, { height: 60 }]}>
-            <Data type="Material" value="Meat, Flour, Water... etc" />
+        <View style={style.options}>
+          {/* <TouchableOpacity
+            style={style.topImageComment}
+            onPress={() => {
+              props.Click();
+            }}
+          >
+            <Image
+              style={{ width: 30, height: 30 }}
+              source={require("../../assets/images/comment.png")}
+            ></Image>
+          </TouchableOpacity> */}
+          <View style={style.topImageStar}>
+            <Star size={30} onChange={() => {
+              AddFavorite(data[0].num, data[0].favorite).then((res) => {
+                active = res;
+              });
+              alert("added")
+            }} active={favorite}/>
           </View>
         </View>
+        <View style={style.dataParent}>
+          <View style={style.dataRow}>
+            <Data type="Type" value={data[0].type} />
+            <Data type="Kkal" value={data[0].kkal} />
+          </View>
+          <View style={style.dataRow}>
+            <Data type="Difficult" value={data[0].difficut} />
+            <Data type="Time" value={data[0].time} />
+          </View>
+          <View style={[style.dataRow]}>
+            <Data type="Material" value={materials} />
+          </View>
+        </View>
+        <View style={style.description}>
+          <Text style={style.descriptionText}>{data[0].description}</Text>
+        </View>
         <View style={style.howTo}>
-          <Text style={style.howToText}>{lorem}</Text>
+          <Text style={style.howToText}>{howTo}</Text>
         </View>
       </ScrollView>
       <Animated.View
@@ -139,12 +166,7 @@ export function Recipe(props) {
           { opacity: opacity, display: reviewFilter },
         ]}
       ></Animated.View>
-      <Animated.View
-        style={[
-          style.commentPanel,
-          { translateY: posY }
-        ]}
-      >
+      <Animated.View style={[style.commentPanel, { translateY: posY }]}>
         <TouchableOpacity
           style={style.commentBackArror}
           onPress={() => {
@@ -173,7 +195,11 @@ export function Recipe(props) {
           <CommentBox name="Wes Bluemarine" text="Weather Report"></CommentBox>
         </ScrollView>
         <View style={style.commentSend}>
-          <TextInput style={style.input} placeholder="Enter your comment..." selectionColor={"black"}></TextInput>
+          <TextInput
+            style={style.input}
+            placeholder="Enter your comment..."
+            selectionColor={"black"}
+          ></TextInput>
           <Image
             style={{ height: 30, width: 30, position: "absolute", right: 10 }}
             source={require("../../assets/images/send-message.png")}
@@ -195,50 +221,69 @@ const style = StyleSheet.create({
     backgroundColor: "red",
     borderRadius: width * 0.1,
     left: width * 0.05,
-    top: width * 0.05,
+    marginTop: width * 0.05,
+    resizeMode: "stretch",
   },
-  topImageComment: {
-    position: "absolute",
-    bottom: 10,
-    left: 20,
+  options: {
+    flexDirection: "row",
+    width: width * 0.9,
+    justifyContent: "space-between",
+    alignSelf: "center",
+    marginTop: 10,
   },
-  topImageStar: {
-    position: "absolute",
-    bottom: 10,
-    right: 20,
-  },
+  topImageComment: {},
+  topImageStar: {},
   dataParent: {
     width: "100%",
-    top: width * 0.1,
   },
   dataRow: {
     flexDirection: "row",
-    margin: width * 0.05,
+    margin: 10,
     marginBottom: 0,
-    height: 60,
   },
   dataBox: {
     flex: 1,
     margin: 5,
-    backgroundColor: "#F77F00",
+    backgroundColor: recipeDataBoxColor,
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
+    padding: 10,
+    flexDirection: "row",
   },
   dataText: {
     fontSize: 15,
+    textTransform: "capitalize",
+    minWidth: 50,
+    textAlign: "right",
+    marginRight: 5,
+  },
+  dataText2: {
+    fontSize: 15,
+    textTransform: "capitalize",
+    flex: 1,
   },
   howTo: {
     width: width * 0.9,
-    minHeight: width * 0.4,
     left: width * 0.05,
-    backgroundColor: "#FccF99",
-    top: width * 0.17,
+    backgroundColor: recipeHowToColor,
+    marginTop: 20,
     borderRadius: 20,
     padding: 10,
-    marginBottom: 80,
+    marginBottom: 20,
   },
   howToText: {
+    fontSize: 15,
+  },
+  description: {
+    width: width * 0.9,
+    left: width * 0.05,
+    backgroundColor: recipeDescriptionColor,
+    marginTop: 20,
+    borderRadius: 20,
+    padding: 10,
+  },
+  descriptionText: {
     fontSize: 15,
   },
   commentFilter: {
@@ -262,12 +307,12 @@ const style = StyleSheet.create({
   },
   commentBackArror: {
     left: 20,
-    top: 10,
+    marginTop: 10,
   },
   commentHeadet: {
     position: "absolute",
     alignSelf: "center",
-    top: 10,
+    marginTop: 10,
   },
   commentBody: {
     marginTop: 20,
@@ -292,10 +337,10 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    width:"80%",
-    marginLeft:10,
+    width: "80%",
+    marginLeft: 10,
     height: 40,
-    
+
     // borderColor: "gray",
     // borderWidth: 1,
   },

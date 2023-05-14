@@ -1,40 +1,37 @@
+import { useState } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
+import { GetFavorites } from "../back/Main";
 import { NormalCard } from "../components/Cards";
 
 export function Favorite() {
-  const data = [
-    { id: "0", title: "item 1" },
-    { id: "1", title: "item 1" },
-    { id: "2", title: "item 1" },
-    { id: "3", title: "item 1" },
-    { id: "4", title: "item 1" },
-    { id: "5", title: "item 1" },
-    { id: "6", title: "item 1" },
-    { id: "7", title: "item 1" },
-    { id: "8", title: "item 1" },
-    { id: "9", title: "item 1" },
-    { id: "10", title: "item 1" },
-    { id: "11", title: "item 1" },
-    { id: "12", title: "item 1" },
-    { id: "13", title: "item 1" },
-    { id: "14", title: "item 1" },
-    { id: "15", title: "item 1" },
-    { id: "16", title: "item 1" },
-    { id: "17", title: "item 1" },
-    { id: "18", title: "item 1" },
-    { id: "19", title: "item 1" },
-    { id: "x"},
-  ];
+  const [load, setLoad] = useState(0);
+  const [datas, setData] = useState([]);
+  const [text, setText] = useState("Loading")
+  if (load == 0) {
+    setLoad(1);
+    GetFavorites().then((res) => {
+      setData(res)
+      setText("Empty")
+    });
+  }
+  const data = [];
+  for (let i = 0; i < datas.length; i++) {
+    data.push({ id: i, data: datas[i] });
+  }
   const renderItem = ({ item }) => <NormalCard item={item}></NormalCard>;
   return (
     <View style={style.main}>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        style={style.test}
-      />
+      {datas.length == 0 ? (
+        <Text>{text}</Text>
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          style={style.test}
+        />
+      )}
     </View>
   );
 }
@@ -44,9 +41,9 @@ const style = StyleSheet.create({
     backgroundColor: "#ffffff",
     height: "100%",
     width: "100%",
-    marginTop:0,
-    marginBottom:50,
+    marginTop: 0,
+    marginBottom: 50,
     // paddingBottom:120,
-    alignItems:"center"
-  }
+    alignItems: "center",
+  },
 });

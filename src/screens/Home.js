@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   View,
   Text,
@@ -6,7 +7,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Navigate, stack } from "../../App";
+import { backgroundColor } from "../../Datas";
+import { GetPopular, GetRandonFood, GetView } from "../back/Main";
 import { HomeCard1, HomeCard2 } from "../components/Cards";
+
+var random1 = GetRandonFood();
 
 function Bar(props) {
   return (
@@ -25,27 +30,54 @@ function Bar(props) {
 }
 
 export function Home(props) {
+  const [popularData, setPopularData] = useState([]);
+  const [popularLoad, setPopularLoad] = useState(0);
+  if (popularLoad == 0) {
+    setPopularLoad(1);
+    GetPopular(5).then((res) => {
+      setPopularData(res);
+    });
+  }
+  const popular = [];
+  for (let i = 0; i < popularData.length; i++) {
+    popular.push(<HomeCard2 data={popularData[i]} key={i} />);
+  }
+
+  const [viewData, setViewData] = useState([]);
+  const [viewLoad, setViewLoad] = useState(0);
+  if (viewLoad == 0) {
+    setViewLoad(1);
+    GetView(5).then((res) => {
+      setViewData(res);
+    });
+  }
+  const view = [];
+  for (let i = 0; i < viewData.length; i++) {
+    view.push(<HomeCard2 data={viewData[i]} key={i} />);
+  }
   return (
     <View style={style.main}>
-      <HomeCard1 />
+      <HomeCard1 data={random1} />
       <Bar name="Most Poplular" />
       <View style={style.scroll}>
         <ScrollView horizontal>
-          <HomeCard2 />
-          <HomeCard2 />
-          <HomeCard2 />
-          <HomeCard2 />
-          <HomeCard2 />
+          {/* <HomeCard2 data={GetRandonFood()} />
+          <HomeCard2 data={GetRandonFood()} />
+          <HomeCard2 data={GetRandonFood()} />
+          <HomeCard2 data={GetRandonFood()} />
+          <HomeCard2 data={GetRandonFood()} /> */}
+          {popular}
         </ScrollView>
       </View>
       <Bar name="Most View" />
       <View style={style.scroll}>
         <ScrollView horizontal>
-          <HomeCard2 />
-          <HomeCard2 />
-          <HomeCard2 />
-          <HomeCard2 />
-          <HomeCard2 />
+          {/* <HomeCard2 data={GetRandonFood()} />
+          <HomeCard2 data={GetRandonFood()} />
+          <HomeCard2 data={GetRandonFood()} />
+          <HomeCard2 data={GetRandonFood()} />
+          <HomeCard2 data={GetRandonFood()} /> */}
+          {view}
         </ScrollView>
       </View>
     </View>
@@ -54,7 +86,7 @@ export function Home(props) {
 
 const style = StyleSheet.create({
   main: {
-    backgroundColor: "#ffffff",
+    backgroundColor: backgroundColor,
     height: "100%",
     width: "100%",
   },

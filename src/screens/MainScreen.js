@@ -25,7 +25,7 @@ export function MainScreen(props) {
         ) : props.page == 3 ? (
           <Favorite  />
         ) : props.page == 4 ? (
-          <User  />
+          <User  setIsLogin={props.setIsLogin}/>
         ) : (
           <View />
         )}
@@ -52,7 +52,7 @@ export function MainScreen(props) {
         ) : current == 3 ? (
           <Favorite  />
         ) : current == 4 ? (
-          <User  />
+          <User  setIsLogin={props.setIsLogin}/>
         ) : (
           <View />
         )}
@@ -80,7 +80,7 @@ export function MainScreen(props) {
         ) : props.page == 3 ? (
           <Favorite  />
         ) : props.page == 4 ? (
-          <User  />
+          <User  setIsLogin={props.setIsLogin}/>
         ) : (
           <View />
         )}
