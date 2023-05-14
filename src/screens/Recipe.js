@@ -63,7 +63,7 @@ export function Recipe(props) {
   const opacity = useRef(new Animated.Value(0)).current;
   const posY = useRef(new Animated.Value(height)).current;
   const [reviewFilter, setReviewFilter] = useState("none");
-  const [favorite, setFavorite] = useState(GetIsFav(data.num));
+  const [favorite, setFavorite] = useState(GetIsFav(data[0].num));
   const materials = data[0].material.join(", ");
   let howTo = "";
   for (let i = 0; i < data[0].howto.length; i++) {

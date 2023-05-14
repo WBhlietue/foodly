@@ -11,8 +11,6 @@ import { backgroundColor } from "../../Datas";
 import { GetPopular, GetRandonFood, GetView } from "../back/Main";
 import { HomeCard1, HomeCard2 } from "../components/Cards";
 
-var random1 = GetRandonFood();
-
 function Bar(props) {
   return (
     <View style={{ margin: 10 }}>
@@ -32,10 +30,18 @@ function Bar(props) {
 export function Home(props) {
   const [popularData, setPopularData] = useState([]);
   const [popularLoad, setPopularLoad] = useState(0);
+  const [rand, setRand] = useState([]);
+  const [load, setLoad] = useState(0);
   if (popularLoad == 0) {
     setPopularLoad(1);
     GetPopular(5).then((res) => {
       setPopularData(res);
+    });
+  }
+  if (load == 0) {
+    setLoad(1);
+    GetRandonFood().then((res) => {
+      setRand(res);
     });
   }
   const popular = [];
@@ -57,7 +63,7 @@ export function Home(props) {
   }
   return (
     <View style={style.main}>
-      <HomeCard1 data={random1} />
+      {rand.length == 0 ? <View></View> : <HomeCard1 data={rand} />}
       <Bar name="Most Poplular" />
       <View style={style.scroll}>
         <ScrollView horizontal>

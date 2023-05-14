@@ -18,7 +18,6 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import data from "../json/testFoodsData.json";
 import { firebaseConfig } from "./api";
 import { Navigate } from "../../App";
 
@@ -53,25 +52,57 @@ export function SetIsLogin(value) {
 
 //num - hoolnii dugaar (primary key)
 
-export function GetWithNum(num) {
-  // herev load dotor baigaa bol shuud teriigee return
-  // tegehgu bol database iin hereglee ihesne
-  // baihgu bol database ees tatna
-  for (let i = 0; i < loadedData.length; i++) {
-    if (loadedData[i].num == num) {
-      return [loadedData[i], pic[num]];
+// export function GetWithNum(num) {
+//   // herev load dotor baigaa bol shuud teriigee return
+//   // tegehgu bol database iin hereglee ihesne
+//   // baihgu bol database ees tatna
+//   for (let i = 0; i < loadedData.length; i++) {
+//     if (loadedData[i].num == num) {
+//       return [loadedData[i], pic[num]];
+//     }
+//   }
+//   num = num % data.length;
+//   const d = data[num];
+//   loadedData.push(d);
+//   return [d, pic[d.num]];
+// }
+
+function RemoveElement(arr, elem) {
+  const list = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] != elem) {
+      list.push(arr[i]);
     }
   }
-  num = num % data.length;
-  const d = data[num];
-  loadedData.push(d);
-  return [d, pic[d.num]];
+  return list;
 }
 
-export function GetRandonFood() {
+export async function GetRandonFood() {
   // avahdaa filter ajilna
-  let rand = Math.floor(Math.random() * data.length);
-  return GetWithNum(rand);
+  // return GetWithNum(rand);
+  const data = await getDocs(
+    query(collection(fireStore, "recipe"), orderBy("num"))
+  );
+  const d = [];
+
+  data.forEach((i) => {
+    d.push(i.data());
+  });
+  const backUP = d;
+  for(let i = 0; i < d.length; i++){
+    for(let j in user.filter){
+      if(d[i].material.indexOf(j)){
+        d = RemoveElement(d, d[i]);
+      }
+    }
+  }
+  if(d.length == 0){
+    d = back;
+  }
+  return [
+    d[Math.floor(Math.random() * d.length)],
+    pic[Math.floor(Math.random() * 5)],
+  ];
 }
 
 export function GetFoodsByCategory(num, category) {
@@ -224,12 +255,11 @@ export function Upload(
 }
 
 export async function GetMyRecipes() {
-  if (myrecipeList.length != user.own) {
-    myrecipeList = [];
-    for (let i of user.own) {
-      let data = await getDoc(doc(fireStore, "recipe", "r" + i));
-      myrecipeList.push([data.data(), pic[i % 5]]);
-    }
+  myrecipeList = [];
+
+  for (let i = 0; i < user.own.length; i++) {
+    let data = await getDoc(doc(fireStore, "recipe", "r" + user.own[i]));
+    myrecipeList.push([data.data(), pic[i % 5]]);
   }
 
   return myrecipeList;
@@ -247,10 +277,9 @@ export async function GetFavorites() {
   }
   const q = query(collection(fireStore, "recipe"), orderBy("num"));
   const list = [];
-  console.log(user.favorite);
   const data = await getDocs(q);
   data.forEach((i) => {
-    if (user.favorite.indexOf(i.data().num)) {
+    if (user.favorite.indexOf(i.data().num) >= 0) {
       list.push([i.data(), pic[Math.floor(Math.random() * 5)]]);
     }
   });
@@ -258,7 +287,7 @@ export async function GetFavorites() {
 }
 
 export function GetIsFav(num) {
-  return user.favorite.indexOf(num) >= 0;
+  return user.favorite.indexOf(num) >= 0 ? 1 : 0;
 }
 
 export async function GetAllMaterials() {

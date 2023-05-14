@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
@@ -14,12 +14,18 @@ import { HomeCard2, RandomCard } from "../components/Cards";
 
 const width = Dimensions.get("window").width;
 
-var random1 = GetRandonFood();
-
 export function Random() {
+  const [rand, setRand] = useState([]);
+  const [load, setLoad] = useState(0);
+  if (load == 0) {
+    setLoad(1);
+    GetRandonFood().then((res) => {
+      setRand(res);
+    });
+  }
   return (
     <View style={style.main}>
-      <RandomCard data={random1}/>
+      {rand.length == 0 ? <View></View> : <RandomCard data={rand} />}
       <RandonPanel />
     </View>
   );
@@ -29,11 +35,13 @@ export function RandonPanel() {
   const aniScale = useRef(new Animated.Value(1)).current;
   var get = false;
   aniScale.addListener((value) => {
-    if(value.value == 1.8 && !get){
-      Navigate("Recipe", GetRandonFood())
-      get = true
+    if (value.value == 1.8 && !get) {
+      GetRandonFood().then((res) => {
+        Navigate("Recipe", res);
+      })
+      get = true;
     }
-  })
+  });
   return (
     <Animated.View style={[style.rand, { scaleX: aniScale, scaleY: aniScale }]}>
       <TouchableOpacity
