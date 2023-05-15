@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Dimensions,
   Image,
@@ -7,11 +8,20 @@ import {
 } from "react-native";
 import { Navigate } from "../../App";
 import { width } from "../../Datas";
+import { GetPicture } from "../back/Main";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export function HomeCard1(props) {
+  const [load, setLoad] = useState(0);
+  const [image, setImage] = useState(null);
+  if (load == 0) {
+    setLoad(1)
+    GetPicture(props.data.num).then((res) => {
+      setImage(res);
+    });
+  }
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -19,12 +29,20 @@ export function HomeCard1(props) {
         Navigate("Recipe", props.data);
       }}
     >
-      <Image style={style.homeCard1} source={props.data[1]}></Image>
+      {image && <Image style={style.homeCard1} source={image}></Image>}
     </TouchableOpacity>
   );
 }
 
 export function HomeCard2(props) {
+  const [load, setLoad] = useState(0);
+  const [image, setImage] = useState(null);
+  if (load == 0) {
+    setLoad(1)
+    GetPicture(props.data.num).then((res) => {
+      setImage(res);
+    });
+  }
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -32,27 +50,42 @@ export function HomeCard2(props) {
         Navigate("Recipe", props.data);
       }}
     >
-      <Image style={style.homeCard2} source={props.data[1]}></Image>
+      {image && <Image style={style.homeCard2} source={image}></Image>}
     </TouchableOpacity>
   );
 }
 
 export function NormalCard(props) {
+  const [load, setLoad] = useState(0);
+  const [image, setImage] = useState(null);
   const data = props.item.data;
+  if (load == 0) {
+    setLoad(1)
+    GetPicture(data.num).then((res) => {
+      setImage(res);
+    });
+  }
   return (
     <TouchableOpacity
-      
       activeOpacity={0.9}
       onPress={() => {
         Navigate("Recipe", data);
       }}
     >
-      <Image style={style.homeCard3} source={data[1]}></Image>
+      {image && <Image style={style.homeCard3} source={image}></Image>}
     </TouchableOpacity>
   );
 }
 
 export function RandomCard(props) {
+  const [load, setLoad] = useState(0);
+  const [image, setImage] = useState(null);
+  if (load == 0) {
+    setLoad(1)
+    GetPicture(props.data.num).then((res) => {
+      setImage(res);
+    });
+  }
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -60,7 +93,7 @@ export function RandomCard(props) {
         Navigate("Recipe", props.data);
       }}
     >
-      <Image style={style.randomCard} source={props.data[1]}></Image>
+      {image && <Image style={style.randomCard} source={image}></Image>}
     </TouchableOpacity>
   );
 }

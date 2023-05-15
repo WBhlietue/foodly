@@ -16,7 +16,7 @@ import {
   recipeDescriptionColor,
   recipeHowToColor,
 } from "../../Datas";
-import { AddFavorite, GetIsFav } from "../back/Main";
+import { AddFavorite, GetIsFav, GetPicture, SetView } from "../back/Main";
 import { headSize } from "../components/Header";
 import { HeaderBack } from "../components/HeaderBack";
 import { lorem } from "../components/Lorem";
@@ -63,12 +63,21 @@ export function Recipe(props) {
   const opacity = useRef(new Animated.Value(0)).current;
   const posY = useRef(new Animated.Value(height)).current;
   const [reviewFilter, setReviewFilter] = useState("none");
-  const [favorite, setFavorite] = useState(GetIsFav(data[0].num));
-  const materials = data[0].material.join(", ");
-  let howTo = "";
-  for (let i = 0; i < data[0].howto.length; i++) {
-    howTo += "      Step" + (i + 1) + ": " + (data[0].howto[i].trim()) + "\n";
+  const [favorite, setFavorite] = useState(GetIsFav(data.num));
+  const materials = data.material.join(", ");
+  const [load, setLoad] = useState(0);
+  const [image, setImage] = useState(null);
+  if(load == 0){
+    setLoad(1)
+    GetPicture(data.num).then((res) => {
+      setImage(res)
+    })
   }
+  let howTo = "";
+  for (let i = 0; i < data.howto.length; i++) {
+    howTo += "      Step" + (i + 1) + ": " + (data.howto[i].trim()) + "\n";
+  }
+  SetView(data.num, data.view)
   useEffect(() => {
     Animated.timing(posY, {
       toValue: height,
@@ -108,13 +117,13 @@ export function Recipe(props) {
   return (
     <View>
       <HeaderBack
-        name={data[0].name}
+        name={data.name}
         navigation={props.navigation}
         back="Main"
       />
       <ScrollView horizontal={false} style={style.main}>
         <TopImage
-          source={data[1]}
+          source={image}
           Click={() => {
             OnClick();
           }}
@@ -133,28 +142,27 @@ export function Recipe(props) {
           </TouchableOpacity> */}
           <View style={style.topImageStar}>
             <Star size={30} onChange={() => {
-              AddFavorite(data[0].num, data[0].favorite).then((res) => {
+              AddFavorite(data.num, data.favorite).then((res) => {
                 active = res;
               });
-              alert("added")
             }} active={favorite}/>
           </View>
         </View>
         <View style={style.dataParent}>
           <View style={style.dataRow}>
-            <Data type="Type" value={data[0].type} />
-            <Data type="Kkal" value={data[0].kkal} />
+            <Data type="Type" value={data.type} />
+            <Data type="Kkal" value={data.kkal} />
           </View>
           <View style={style.dataRow}>
-            <Data type="Difficult" value={data[0].difficut} />
-            <Data type="Time" value={data[0].time} />
+            <Data type="Difficult" value={data.difficut} />
+            <Data type="Time" value={data.time} />
           </View>
           <View style={[style.dataRow]}>
             <Data type="Material" value={materials} />
           </View>
         </View>
         <View style={style.description}>
-          <Text style={style.descriptionText}>{data[0].description}</Text>
+          <Text style={style.descriptionText}>{data.description}</Text>
         </View>
         <View style={style.howTo}>
           <Text style={style.howToText}>{howTo}</Text>

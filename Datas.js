@@ -7,8 +7,6 @@ const imagePath = "../../assets/images/";
 export const footerColor = "#9999ff";
 export const headerColor = "#aaffaa";
 export const backgroundColor = "#f8f8f8";
-export const mainTextColor = "";
-export const subTextColor = "";
 export const loginRegsiterTextColor = "#00aaaa";
 export const loginRegisterButtonColor = "#00aaaa";
 export const loginRegisterButtonTextColor = "#ffffff";
@@ -24,6 +22,7 @@ export const myRecipeCardBtnColor = "#ffdd00";
 export const addSaveRecipeButton = "#ffdd00"
 export const searchBarColor= "#ffffff"
 export const searchOutBarColor= "#00ffbb"
+export const uploadImageBtnColor = "#00ffbb"
 
 //sizes
 

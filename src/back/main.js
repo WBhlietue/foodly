@@ -7,6 +7,7 @@ import {
 } from "firebase/auth";
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -20,6 +21,13 @@ import {
 } from "firebase/firestore";
 import { firebaseConfig } from "./api";
 import { Navigate } from "../../App";
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 
 // import { initializeApp } from "firebase/app";
 // import { firebaseConfig } from "./api";
@@ -32,6 +40,7 @@ var userID;
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const fireStore = getFirestore(app);
+const storage = getStorage(app);
 var myrecipeList = [];
 const pic = [
   require("../../assets/images/foods/1.jpg"),
@@ -77,32 +86,36 @@ function RemoveElement(arr, elem) {
   return list;
 }
 
+export async function GetPicture(num) {
+  const res = await getDownloadURL(ref(storage, "images/" + num + ".jpeg"));
+  return { uri: res };
+}
+
 export async function GetRandonFood() {
   // avahdaa filter ajilna
   // return GetWithNum(rand);
   const data = await getDocs(
     query(collection(fireStore, "recipe"), orderBy("num"))
   );
-  const d = [];
+  var d = [];
 
   data.forEach((i) => {
     d.push(i.data());
   });
   const backUP = d;
-  for(let i = 0; i < d.length; i++){
-    for(let j in user.filter){
-      if(d[i].material.indexOf(j)){
+  for (let i = 0; i < d.length; i++) {
+    for (let j in user.filter) {
+      if (d[i].material.indexOf(j)) {
         d = RemoveElement(d, d[i]);
       }
     }
   }
-  if(d.length == 0){
+  if (d.length == 0) {
     d = back;
   }
-  return [
-    d[Math.floor(Math.random() * d.length)],
-    pic[Math.floor(Math.random() * 5)],
-  ];
+  let rand = Math.floor(Math.random() * d.length);
+  var a = d[rand];
+  return a;
 }
 
 export function GetFoodsByCategory(num, category) {
@@ -153,21 +166,25 @@ export async function GetPopular(num) {
   let list = [];
   const q = query(
     collection(fireStore, "recipe"),
-    orderBy("favorite"),
+    orderBy("favorite", "desc"),
     limit(num)
   );
   const doc = await getDocs(q);
   doc.forEach((i) => {
-    list.push([i.data(), pic[Math.floor(Math.random() * 5)]]);
+    list.push(i.data());
   });
   return list;
 }
 export async function GetView(num) {
   let list = [];
-  const q = query(collection(fireStore, "recipe"), orderBy("view"), limit(num));
+  const q = query(
+    collection(fireStore, "recipe"),
+    orderBy("view", "desc"),
+    limit(num)
+  );
   const doc = await getDocs(q);
   doc.forEach((i) => {
-    list.push([i.data(), pic[Math.floor(Math.random() * 5)]]);
+    list.push(i.data());
   });
   return list;
 }
@@ -196,7 +213,7 @@ export async function AddFavorite(num, fav) {
   return stat;
 }
 
-export function Upload(
+export async function Upload(
   name,
   type,
   kkal,
@@ -205,9 +222,28 @@ export function Upload(
   material,
   description,
   howto,
+  imageUri,
   onComplete,
   onError
 ) {
+  // const getBlobFroUri = async (uri) => {
+  //   const blob = await new Promise((resolve, reject) => {
+  //     const xhr = new XMLHttpRequest();
+  //     xhr.onload = function () {
+  //       resolve(xhr.response);
+  //     };
+  //     xhr.onerror = function (e) {
+  //       reject(new TypeError("Network request failed"));
+  //     };
+  //     xhr.responseType = "blob";
+  //     xhr.open("GET", uri, true);
+  //     xhr.send(null);
+  //   });
+
+  //   return blob;
+  // };
+  const response = await fetch(imageUri);
+  const blob = await response.blob();
   if (user.own.length == 0) {
     user.own = [];
   }
@@ -233,11 +269,13 @@ export function Upload(
       };
       setDoc(doc(fireStore, "recipe", "r" + num), data)
         .then(() => {
-          onComplete();
           myrecipeList.push(data);
           user.own.push(num);
           updateDoc(doc(fireStore, "user", userID), { own: user.own })
-            .then(() => {})
+            .then(() => {
+              onComplete();
+            })
+
             .catch((error) => {
               onError(error);
             });
@@ -245,6 +283,12 @@ export function Upload(
         .catch((error) => {
           onError(error);
         });
+      const picMeta = { contentType: "image/jpeg" };
+      uploadBytes(ref(storage, "images/" + num + ".jpeg"), blob, picMeta).then(
+        (res) => {
+          console.log(res);
+        }
+      );
     })
     .catch((error) => {
       onError(error);
@@ -255,20 +299,24 @@ export function Upload(
 }
 
 export async function GetMyRecipes() {
-  myrecipeList = [];
+  const my = [];
 
   for (let i = 0; i < user.own.length; i++) {
     let data = await getDoc(doc(fireStore, "recipe", "r" + user.own[i]));
-    myrecipeList.push([data.data(), pic[i % 5]]);
+    my.push(data.data());
+    console.log(my);
   }
-
-  return myrecipeList;
+  return my;
 }
 
 export function Edit(json) {}
 
-export function Delete(num) {
+export async function Delete(num) {
   //user ni uuriinhuu upload hiisniig ustgana
+  await deleteDoc(doc(fireStore, "recipe", "r" + num));
+  await deleteObject(ref(storage, "images/" + num + ".jpeg"));
+  user.own = RemoveElement(user.own, num);
+  await updateDoc(doc(fireStore, "user", userID), { own: user.own });
 }
 
 export async function GetFavorites() {
@@ -280,7 +328,7 @@ export async function GetFavorites() {
   const data = await getDocs(q);
   data.forEach((i) => {
     if (user.favorite.indexOf(i.data().num) >= 0) {
-      list.push([i.data(), pic[Math.floor(Math.random() * 5)]]);
+      list.push(i.data());
     }
   });
   return list;
@@ -322,9 +370,12 @@ export async function SetFilter(text) {
     });
     user.filter = list;
   }
-  alert("123");
   await updateDoc(doc(fireStore, "user", userID), { filter: user.filter });
   return num;
+}
+
+export function SetView(num, view) {
+  updateDoc(doc(fireStore, "recipe", "r" + num), { view: view + 1 });
 }
 
 /*

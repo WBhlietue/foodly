@@ -31,7 +31,7 @@ export function Login(props) {
         () => {
           setIsLogin(0);
           // props.navigation.push("Main");
-          props.route.params.setIsLogin(1)
+          props.route.params.setIsLogin(1);
         },
         (error) => {
           setIsLogin(0);
@@ -59,7 +59,7 @@ export function Login(props) {
         placeholder="email"
         placeholderTextColor={"#00000040"}
         onChangeText={(e) => {
-          setemail(e)
+          setemail(e);
         }}
       />
       <TextInput
@@ -67,7 +67,7 @@ export function Login(props) {
         placeholder="password"
         placeholderTextColor={"#00000040"}
         onChangeText={(e) => {
-          setpass(e)
+          setpass(e);
         }}
       />
       <View style={style.option}>
@@ -94,13 +94,13 @@ export function Login(props) {
         <TouchableOpacity style={style.btn}>
           <Image
             style={style.otherBtn}
-            source={require(imagePath + "google.png")}
+            source={require("../../assets/images/google.png")}
           ></Image>
         </TouchableOpacity>
         <TouchableOpacity style={style.btn}>
           <Image
             style={style.otherBtn}
-            source={require(imagePath + "facebook.png")}
+            source={require("../../assets/images/facebook.png")}
           ></Image>
         </TouchableOpacity>
       </View>

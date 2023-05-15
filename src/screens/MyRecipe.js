@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Navigate } from "../../App";
 import {
   myRecipeAddBtnColor,
@@ -7,36 +14,56 @@ import {
   myRecipeCardBtnColor,
   width,
 } from "../../Datas";
-import { GetFoodsByCategory, GetMyRecipes } from "../back/Main";
+import {
+  Delete,
+  GetFoodsByCategory,
+  GetMyRecipes,
+  GetPicture,
+} from "../back/Main";
 import { HeaderBack } from "../components/HeaderBack";
-// {"description": "test", "difficult": "test", "howto": "test", "kkal": "test", "material": "test",
-// "name": "test1", "num": 0, "time": "test", "type": "twst", "user": "hakuran"}
 function RecipeCard(props) {
+  const [load, setLoad] = useState(0);
+  const [image, setImage] = useState(null);
+  if (load == 0) {
+    setLoad(1);
+    GetPicture(props.data.num).then((res) => {
+      setImage(res);
+    });
+  }
   return (
     <View style={style.recipeCardMain}>
-      <Image source={props.data[1]} style={style.recipeCardPic}></Image>
+      {image && <Image source={image} style={style.recipeCardPic}></Image>}
       <View style={style.recipeCardDatas}>
         <View style={style.recipeCardRow}>
           <Text style={style.recipeCardText}>Name: </Text>
-          <Text style={style.recipeCardText}>{props.data[0].name}</Text>
+          <Text style={style.recipeCardText}>{props.data.name}</Text>
         </View>
         <View style={style.recipeCardRow}>
           <Text style={style.recipeCardText}>Num: </Text>
-          <Text style={style.recipeCardText}>{props.data[0].num}</Text>
+          <Text style={style.recipeCardText}>{props.data.num}</Text>
         </View>
         <View style={style.recipeCardRow}>
           <Text style={style.recipeCardText}>Views: </Text>
-          <Text style={style.recipeCardText}>{props.data[0].view}</Text>
+          <Text style={style.recipeCardText}>{props.data.view}</Text>
         </View>
         <View style={style.recipeCardRow}>
           <Text style={style.recipeCardText}>Favorites: </Text>
-          <Text style={style.recipeCardText}>{props.data[0].favorite}</Text>
+          <Text style={style.recipeCardText}>{props.data.favorite}</Text>
         </View>
         <View style={style.recipeCardRow2}>
-          <TouchableOpacity style={style.recipeCardBtn}>
+          {/* <TouchableOpacity style={style.recipeCardBtn}>
             <Text style={style.recipeCardBtnText}>Edit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={style.recipeCardBtn}>
+          </TouchableOpacity> */}
+          <TouchableOpacity
+            style={style.recipeCardBtn}
+            onPress={() => {
+              Delete(props.data.num).then(() => {
+                props.update(0);
+                setLoad(0)
+                d([])
+              });
+            }}
+          >
             <Text style={style.recipeCardBtnText}>Delete</Text>
           </TouchableOpacity>
         </View>
@@ -69,16 +96,17 @@ export function MyRecipe(props) {
   }
   let card = [];
   for (let i = 0; i < data.length; i++) {
-    card.push(<RecipeCard data={data[i]} key={i} />);
+    console.log(data);
+    card.push(<RecipeCard data={data[i]} key={i} update={setGetData} d= {setData}/>);
   }
   for (let i of data) {
   }
   return (
     <View style={style.main}>
       <HeaderBack name={"My Recipes"} back="Main" />
-    <ScrollView >
-      {card}
-      <View style={{height:90}}></View>
+      <ScrollView>
+        {card}
+        <View style={{ height: 90 }}></View>
       </ScrollView>
       <AddButton />
     </View>

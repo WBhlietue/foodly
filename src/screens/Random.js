@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
@@ -13,7 +13,7 @@ import { GetNumberRandomFood, GetRandonFood } from "../back/Main";
 import { HomeCard2, RandomCard } from "../components/Cards";
 
 const width = Dimensions.get("window").width;
-
+var change = 0;
 export function Random() {
   const [rand, setRand] = useState([]);
   const [load, setLoad] = useState(0);
@@ -21,6 +21,7 @@ export function Random() {
     setLoad(1);
     GetRandonFood().then((res) => {
       setRand(res);
+      change = 0;
     });
   }
   return (
@@ -33,13 +34,16 @@ export function Random() {
 
 export function RandonPanel() {
   const aniScale = useRef(new Animated.Value(1)).current;
-  var get = false;
+  change=0
   aniScale.addListener((value) => {
-    if (value.value == 1.8 && !get) {
+    if (value.value >= 1.8 && change == 0) {
+      change = 1;
+      console.log(change);
       GetRandonFood().then((res) => {
+        alert("for " + change);
         Navigate("Recipe", res);
-      })
-      get = true;
+        
+      });
     }
   });
   return (

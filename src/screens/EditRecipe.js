@@ -17,12 +17,16 @@ import {
   recipeDataBoxColor,
   recipeDescriptionColor,
   recipeHowToColor,
+  uploadImageBtnColor,
 } from "../../Datas";
 import { Upload } from "../back/Main";
 import { headSize } from "../components/Header";
 import { HeaderBack } from "../components/HeaderBack";
 import { lorem } from "../components/Lorem";
 import { Star } from "../components/Star";
+import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker";
+import { getInfoAsync } from "expo-file-system";
+import { manipulateAsync } from "expo-image-manipulator";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -31,14 +35,6 @@ function Data(props) {
   return (
     <View style={style.dataBox}>
       <TextInput style={style.dataText2} placeholder={props.type}></TextInput>
-    </View>
-  );
-}
-
-function TopImage(props) {
-  return (
-    <View>
-      <Image source={props.source} style={style.topImageImage}></Image>
     </View>
   );
 }
@@ -55,6 +51,43 @@ export function EditRecipe(props) {
   const [material, setMaterial] = useState("");
   const [description, setDescription] = useState("");
   const [howto, setHowto] = useState("");
+  const [image, setImage] = useState(null);
+  async function GetImage() {
+    const result = await launchImageLibraryAsync({
+      mediaTypes: MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      console.log(result);
+      const pic = await manipulateAsync(
+        result.assets[0].uri,
+        [
+        ],
+        { compress:0.1, format:"jpeg"}
+      );
+
+      checkFileSize(pic.uri).then((i) => {
+        console.log(i.size/1024/1024);
+      });
+      setImage(pic.uri);
+    }
+  }
+  const checkFileSize = async (fileURI) => {
+    const fileSizeInBytes = await getInfoAsync(fileURI);
+    return fileSizeInBytes;
+  };
+  function TopImage(props) {
+    return (
+      <View>
+        {image && (
+          <Image source={{ uri: image }} style={style.topImageImage}></Image>
+        )}
+      </View>
+    );
+  }
 
   return (
     <View>
@@ -64,13 +97,15 @@ export function EditRecipe(props) {
         back="MyRecipe"
       />
       <ScrollView horizontal={false} style={style.main}>
-        <TopImage
-          source={data[1]}
-          Click={() => {
-            OnClick();
+        <TopImage source={data[1]} />
+        <TouchableOpacity
+          style={style.uploadImageBtn}
+          onPress={() => {
+            GetImage();
           }}
-        />
-
+        >
+          <Text>Upload Image</Text>
+        </TouchableOpacity>
         <View style={style.dataParent}>
           <View style={style.description}>
             <TextInput
@@ -165,6 +200,7 @@ export function EditRecipe(props) {
               material,
               description,
               howto,
+              image,
               () => {
                 setPros(0);
                 Navigate("MyRecipe");
@@ -193,7 +229,9 @@ const style = StyleSheet.create({
   topImageImage: {
     width: width * 0.9,
     height: ((width * 0.9) / 16) * 9,
-    backgroundColor: "red",
+    backgroundColor: "white",
+    borderColor: "black",
+    borderWidth: 1,
     borderRadius: width * 0.1,
     left: width * 0.05,
     marginTop: width * 0.05,
@@ -327,5 +365,15 @@ const style = StyleSheet.create({
   },
   saveBtnTxt: {
     fontSize: 25,
+  },
+  uploadImageBtn: {
+    backgroundColor: uploadImageBtnColor,
+    height: 50,
+    width: width * 0.6,
+    marginTop: 10,
+    marginHorizontal: width * 0.2,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 100,
   },
 });

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Navigate, stack } from "../../App";
 import { backgroundColor } from "../../Datas";
-import { GetPopular, GetRandonFood, GetView } from "../back/Main";
+import { GetPopular, GetRandonFood, GetView, Test } from "../back/Main";
 import { HomeCard1, HomeCard2 } from "../components/Cards";
 
 function Bar(props) {
