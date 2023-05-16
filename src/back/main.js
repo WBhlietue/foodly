@@ -42,13 +42,6 @@ const auth = getAuth(app);
 const fireStore = getFirestore(app);
 const storage = getStorage(app);
 var myrecipeList = [];
-const pic = [
-  require("../../assets/images/foods/1.jpg"),
-  require("../../assets/images/foods/2.jpg"),
-  require("../../assets/images/foods/3.jpg"),
-  require("../../assets/images/foods/4.jpg"),
-  require("../../assets/images/foods/5.jpg"),
-];
 
 export function GetIsLogin() {
   return isLogged;
@@ -105,7 +98,7 @@ export async function GetRandonFood() {
   const backUP = d;
   for (let i = 0; i < d.length; i++) {
     for (let j in user.filter) {
-      if (d[i].material.indexOf(j)) {
+      if (d[i].material.indexOf(j) >= 0) {
         d = RemoveElement(d, d[i]);
       }
     }
@@ -419,3 +412,4 @@ export function SetView(num, view) {
         }
 
 */
+

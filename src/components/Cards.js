@@ -109,7 +109,7 @@ const style = StyleSheet.create({
     resizeMode: "stretch",
   },
   homeCard2: {
-    width: windowWidth * 0.6,
+    width: windowWidth * 0.47,
     height: ((windowWidth * 0.6) / 16) * 9,
     borderRadius: 20,
     margin: 5,

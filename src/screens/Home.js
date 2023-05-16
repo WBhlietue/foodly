@@ -67,22 +67,12 @@ export function Home(props) {
       <Bar name="Most Poplular" />
       <View style={style.scroll}>
         <ScrollView horizontal>
-          {/* <HomeCard2 data={GetRandonFood()} />
-          <HomeCard2 data={GetRandonFood()} />
-          <HomeCard2 data={GetRandonFood()} />
-          <HomeCard2 data={GetRandonFood()} />
-          <HomeCard2 data={GetRandonFood()} /> */}
           {popular}
         </ScrollView>
       </View>
       <Bar name="Most View" />
       <View style={style.scroll}>
         <ScrollView horizontal>
-          {/* <HomeCard2 data={GetRandonFood()} />
-          <HomeCard2 data={GetRandonFood()} />
-          <HomeCard2 data={GetRandonFood()} />
-          <HomeCard2 data={GetRandonFood()} />
-          <HomeCard2 data={GetRandonFood()} /> */}
           {view}
         </ScrollView>
       </View>

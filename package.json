@@ -13,9 +13,14 @@
     "@react-native-firebase/app": "^17.4.3",
     "@react-native-firebase/auth": "^17.4.3",
     "@react-native-firebase/firestore": "^17.4.3",
+    "@react-native-picker/picker": "2.4.8",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
+    "eas-cli": "^3.12.0",
     "expo": "^48.0.0",
+    "expo-file-system": "~15.2.2",
+    "expo-image-manipulator": "~11.1.1",
+    "expo-image-picker": "~14.1.1",
     "expo-status-bar": "~1.4.4",
     "firebase": "^9.22.0",
     "react": "18.2.0",
@@ -25,11 +30,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-svg": "13.4.0",
     "react-native-web": "~0.18.7",
-    "sync-storage": "^0.4.2",
-    "@react-native-picker/picker": "2.4.8",
-    "expo-image-picker": "~14.1.1",
-    "expo-file-system": "~15.2.2",
-    "expo-image-manipulator": "~11.1.1"
+    "sync-storage": "^0.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

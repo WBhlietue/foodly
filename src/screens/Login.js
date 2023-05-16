@@ -97,6 +97,7 @@ export function Login(props) {
             source={require("../../assets/images/google.png")}
           ></Image>
         </TouchableOpacity>
+        
         <TouchableOpacity style={style.btn}>
           <Image
             style={style.otherBtn}
@@ -128,7 +129,7 @@ const style = StyleSheet.create({
   },
   logo: {},
   logoImg: {
-    marginTop: 50,
+    marginTop: 1,
     marginBottom: 50,
     width: width * 0.9,
     height: ((width * 0.9) / 16) * 9,

@@ -226,7 +226,7 @@ const style = StyleSheet.create({
   topImageImage: {
     width: width * 0.9,
     height: ((width * 0.9) / 16) * 9,
-    backgroundColor: "red",
+    backgroundColor: "white",
     borderRadius: width * 0.1,
     left: width * 0.05,
     marginTop: width * 0.05,

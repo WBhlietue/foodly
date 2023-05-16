@@ -38,9 +38,7 @@ export function RandonPanel() {
   aniScale.addListener((value) => {
     if (value.value >= 1.8 && change == 0) {
       change = 1;
-      console.log(change);
       GetRandonFood().then((res) => {
-        alert("for " + change);
         Navigate("Recipe", res);
         
       });

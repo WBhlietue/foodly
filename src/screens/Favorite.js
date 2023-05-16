@@ -28,7 +28,7 @@ export function Favorite() {
           data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          numColumns={2}
+          numColumns={1}
           style={style.test}
         />
       )}
